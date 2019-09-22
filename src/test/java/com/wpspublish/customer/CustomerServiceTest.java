@@ -12,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CustomerServiceService {
+public class CustomerServiceTest {
 
     private static final Long CUSTOMER_ID = 1L;
     private static final String FIRST_NAME = "Thiago";

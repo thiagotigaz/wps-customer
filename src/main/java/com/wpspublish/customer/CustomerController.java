@@ -34,7 +34,7 @@ public class CustomerController {
 
     @ApiOperation(value = "Searchs for customers in a paginable fashion")
     @GetMapping
-    Page<CustomerDto> search(@SortDefault.SortDefaults({
+    Page<Customer> search(@SortDefault.SortDefaults({
             @SortDefault(sort = "firstName", direction = Sort.Direction.ASC)
     }) Pageable pageable) {
         return customerService.findAll(pageable);

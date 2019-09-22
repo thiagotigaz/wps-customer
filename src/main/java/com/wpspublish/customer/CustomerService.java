@@ -14,5 +14,5 @@ public interface CustomerService {
 
     Optional<CustomerDto> find(Long id);
 
-    Page<CustomerDto> findAll(Pageable pageable);
+    Page<Customer> findAll(Pageable pageable);
 }
