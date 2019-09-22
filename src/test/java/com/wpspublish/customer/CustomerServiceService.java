@@ -1,6 +1,5 @@
 package com.wpspublish.customer;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -21,7 +20,7 @@ public class CustomerServiceService {
     private static final String PROFESSION = "Software Architect";
     private static final int AGE = 29;
     private static final Customer CUSTOMER = new Customer(CUSTOMER_ID, FIRST_NAME, LAST_NAME, PROFESSION, AGE);
-    private static final CustomerDto CUSTOMER_DTO = new CustomerDto(FIRST_NAME, LAST_NAME, PROFESSION, AGE);
+    private static final CustomerDto CUSTOMER_DTO = new CustomerDto(FIRST_NAME, LAST_NAME, PROFESSION, AGE, null);
 
     @Mock
     private CustomerRepository customerRepository;

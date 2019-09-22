@@ -47,7 +47,7 @@ public class CustomerControllerTest {
                 .andExpect(status().isOk());
 
         // Assert
-        verify(customerRepository).findAll(pageableCaptor.capture());
+        verify(customerService).findAll(pageableCaptor.capture());
         PageRequest pageable = (PageRequest) pageableCaptor.getValue();
         assertThat(pageable.getPageNumber(), is(5));
         assertThat(pageable.getPageSize(), is(10));
@@ -55,4 +55,6 @@ public class CustomerControllerTest {
         assertThat(sort.getOrderFor("first_name").getDirection(), is(Direction.ASC));
         assertThat(sort.getOrderFor("id").getDirection(), is(Direction.DESC));
     }
+
+    // TODO Add tests for all other controller methods
 }

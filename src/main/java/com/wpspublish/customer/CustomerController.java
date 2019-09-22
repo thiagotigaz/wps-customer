@@ -30,22 +30,21 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Api("Customer")
 public class CustomerController {
 
-    private final CustomerRepository customerRepository;
     private final CustomerService customerService;
 
     @ApiOperation(value = "Searchs for customers in a paginable fashion")
     @GetMapping
-    Page<Customer> search(@SortDefault.SortDefaults({
+    Page<CustomerDto> search(@SortDefault.SortDefaults({
             @SortDefault(sort = "firstName", direction = Sort.Direction.ASC)
     }) Pageable pageable) {
-        return customerRepository.findAll(pageable);
+        return customerService.findAll(pageable);
     }
 
     @ApiOperation(value = "Finds a customer by the given id")
     @GetMapping("/{id}")
-    ResponseEntity<Customer> findById(@PathVariable Long id) {
-        Optional<Customer> customer = customerRepository.findById(id);
-        return customer.isPresent() ? ResponseEntity.of(customer) : ResponseEntity.notFound().build();
+    ResponseEntity<CustomerDto> findById(@PathVariable Long id) {
+        Optional<CustomerDto> customerDto = customerService.find(id);
+        return customerDto.isPresent() ? ResponseEntity.of(customerDto) : ResponseEntity.notFound().build();
     }
 
     @ApiOperation(value = "Creates a new customer with the given information")

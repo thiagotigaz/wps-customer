@@ -1,8 +1,13 @@
 package com.wpspublish.customer;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,5 +66,30 @@ public class CustomerServiceImpl implements CustomerService {
         } else {
             throw new CustomerBadRequestException();
         }
+    }
+
+    /**
+     * Finds a single customer and map to its dto before returning
+     * @param id of the customer
+     * @return customer dto containing restricted information
+     */
+    @Override
+    public Optional<CustomerDto> find(Long id) {
+        Optional<Customer> custOpt = customerRepository.findById(id);
+        return custOpt.map(customer -> modelMapper.map(customer, CustomerDto.class));
+    }
+
+    /**
+     * Finds all customers in a pageable fashion and maps to dto before returning
+     * @param pageable containing the information to be searched
+     * @return pageable dto containing page information and list of customer dto
+     */
+    @Override
+    public Page<CustomerDto> findAll(Pageable pageable) {
+        Page<Customer> customerPage = customerRepository.findAll(pageable);
+        List<CustomerDto> dtos = customerPage.getContent().stream()
+                .map(c -> modelMapper.map(c, CustomerDto.class))
+                .collect(Collectors.toList());
+        return new PageImpl<CustomerDto>(dtos, pageable, customerPage.getTotalElements());
     }
 }

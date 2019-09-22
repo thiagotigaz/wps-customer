@@ -1,22 +1,29 @@
 package com.wpspublish.customer;
 
+import java.time.LocalDateTime;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CustomerDto {
 
     @NotBlank
-    private final String firstName;
+    private String firstName;
     @NotBlank
-    private final String lastName;
+    private String lastName;
     @NotBlank
-    private final String profession;
+    private String profession;
     @NotNull
     @Min(0)
     @Max(120)
-    private final Integer age;
+    private Integer age;
+    private LocalDateTime dateCreated;
+
 }
