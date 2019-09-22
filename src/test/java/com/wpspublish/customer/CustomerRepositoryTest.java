@@ -14,6 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class CustomerRepositoryTest {
 
+    private static final String FIRST_NAME = "John";
+    private static final String LAST_NAME = "Ripper";
+    private static final String PROFESSION = "Actor";
+    private static final int AGE = 30;
+    private static final Customer CUSTOMER = new Customer(null, FIRST_NAME, LAST_NAME, PROFESSION, AGE);
+
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -31,16 +37,10 @@ public class CustomerRepositoryTest {
     @Test
     @Transactional
     public void idShouldBeReturnedWhenNewCustomerAdded() {
-        // Arrange
-        Customer customer = new Customer();
-        customer.setAge(30);
-        customer.setFirstName("John");
-        customer.setLastName("Ripper");
-        customer.setProfession("Actor");
         // Act
-        customer = customerRepository.save(customer);
+        Customer persistedCustomer = customerRepository.save(CUSTOMER);
         // Assert
-        assertThat(customer.getId()).isPositive();
+        assertThat(persistedCustomer.getId()).isPositive();
     }
 
 }

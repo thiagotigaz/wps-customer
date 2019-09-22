@@ -1,5 +1,7 @@
 package com.wpspublish.customer;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -25,11 +27,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/customer")
+@Api("Customer")
 public class CustomerController {
 
     private final CustomerRepository customerRepository;
     private final CustomerService customerService;
 
+    @ApiOperation(value = "Searchs for customers in a paginable fashion")
     @GetMapping
     Page<Customer> search(@SortDefault.SortDefaults({
             @SortDefault(sort = "firstName", direction = Sort.Direction.ASC)
@@ -37,12 +41,14 @@ public class CustomerController {
         return customerRepository.findAll(pageable);
     }
 
+    @ApiOperation(value = "Finds a customer by the given id")
     @GetMapping("/{id}")
     ResponseEntity<Customer> findById(@PathVariable Long id) {
         Optional<Customer> customer = customerRepository.findById(id);
         return customer.isPresent() ? ResponseEntity.of(customer) : ResponseEntity.notFound().build();
     }
 
+    @ApiOperation(value = "Creates a new customer with the given information")
     @PostMapping
     ResponseEntity createCustomer(@Valid @RequestBody CustomerDto customerDto, HttpServletRequest request) {
         Customer newCust = customerService.createCustomer(customerDto);
@@ -52,6 +58,7 @@ public class CustomerController {
         return ResponseEntity.created(uriComponents.toUri()).build();
     }
 
+    @ApiOperation(value = "Updates an existing customer with the given information")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     void updateCustomer(@PathVariable Long id, @Valid @RequestBody CustomerDto customerDto)
@@ -59,6 +66,7 @@ public class CustomerController {
         customerService.updateCustomer(id, customerDto);
     }
 
+    @ApiOperation(value = "Deletes an existing customer by the given id")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteCustomer(@PathVariable Long id) throws CustomerBadRequestException {

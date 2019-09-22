@@ -5,20 +5,18 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class CustomerDto {
 
     @NotBlank
-    private String firstName;
+    private final String firstName;
     @NotBlank
-    private String lastName;
+    private final String lastName;
     @NotBlank
-    private String profession;
+    private final String profession;
     @NotNull
     @Min(0)
     @Max(120)
-    private Integer age;
+    private final Integer age;
 }
