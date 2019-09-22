@@ -1,8 +1,12 @@
 package com.wpspublish.customer;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerServiceTest {
@@ -20,7 +27,8 @@ public class CustomerServiceTest {
     private static final String PROFESSION = "Software Architect";
     private static final int AGE = 29;
     private static final Customer CUSTOMER = new Customer(CUSTOMER_ID, FIRST_NAME, LAST_NAME, PROFESSION, AGE);
-    private static final CustomerDto CUSTOMER_DTO = new CustomerDto(FIRST_NAME, LAST_NAME, PROFESSION, AGE, null);
+    private static final CustomerDto CUSTOMER_DTO =
+            new CustomerDto(FIRST_NAME, LAST_NAME, PROFESSION, AGE, CUSTOMER.getDateCreated());
 
     @Mock
     private CustomerRepository customerRepository;
@@ -79,6 +87,34 @@ public class CustomerServiceTest {
         // Assert
         verify(modelMapper).map(CUSTOMER_DTO, Customer.class);
         verify(customerRepository).save(CUSTOMER);
+    }
+
+    @Test
+    public void findShouldReturnDto() {
+        // Arrange
+        Optional<Customer> customerOptional = Optional.of(CUSTOMER);
+        when(customerRepository.findById(CUSTOMER_ID)).thenReturn(customerOptional);
+        when(modelMapper.map(CUSTOMER, CustomerDto.class)).thenReturn(CUSTOMER_DTO);
+        // Act
+        Optional<CustomerDto> customerDto = customerService.find(CUSTOMER_ID);
+        // Assert
+        verify(customerRepository).findById(CUSTOMER_ID);
+        verify(modelMapper).map(CUSTOMER, CustomerDto.class);
+        assertTrue(customerDto.isPresent());
+    }
+
+    @Test
+    public void findAllShouldReturnPage() {
+        // Arrange
+        PageImpl page = new PageImpl(Arrays.asList(CUSTOMER, CUSTOMER, CUSTOMER));
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        when(customerRepository.findAll(pageRequest)).thenReturn(page);
+        // Act
+        Page<Customer> customerPage = customerService.findAll(pageRequest);
+        // Assert
+        verify(customerRepository).findAll(pageRequest);
+        assertTrue(customerPage.hasContent());
+        assertThat(customerPage.getContent().size(), is(3));
     }
 
 }

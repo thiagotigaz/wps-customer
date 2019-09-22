@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Test;
@@ -56,5 +57,14 @@ public class CustomerControllerTest {
         assertThat(sort.getOrderFor("id").getDirection(), is(Direction.DESC));
     }
 
-    // TODO Add tests for all other controller methods
+    @Test
+    public void createCustomerShouldReturnLocationHeader() throws Exception {
+        // Arrange and Act
+        mockMvc.perform(post("/customer")
+                .param("page", "5")
+                .param("size", "10")
+                .param("sort", "id,desc")   // <-- no space after comma!
+                .param("sort", "first_name,asc")) // <-- no space after comma!
+                .andExpect(status().isCreated());
+    }
 }

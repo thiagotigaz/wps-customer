@@ -67,6 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     /**
      * Finds a single customer and map to its dto before returning
+     *
      * @param id of the customer
      * @return customer dto containing restricted information
      */
@@ -78,6 +79,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     /**
      * Finds all customers in a pageable fashion
+     *
      * @param pageable containing the information to be searched
      * @return pageable containing page information and list of customers
      */
