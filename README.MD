@@ -14,3 +14,6 @@ The files will be stored in the wps-db-data project sibling folder.
 ## Swagger documentation
 Swagger is used in this application and swagger-ui for customers' endpoint is at http://localhost:8080/swagger-ui.html#/customer-controller
 Please access this page to try the available operations.
+
+# Demo Url
+http://wps.supercloud.com.br:8080/customer
